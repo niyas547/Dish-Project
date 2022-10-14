@@ -1,0 +1,7 @@
+add task..................
+
+all inside the form tag
+name property added in each forms
+buttn type must be submit
+inside the form metod must post
+{% csrf_token %} inside the form tag
