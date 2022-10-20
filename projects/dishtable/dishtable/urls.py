@@ -25,6 +25,6 @@ urlpatterns = [
     path('dishes/<int:id>',views.DishDetailView.as_view(),name="dish-detail"),
     path('dishes/<int:id>/remove',views.DishDeleteView.as_view(),name="dish-delete"),
     path('signup',views.RegistrationView.as_view(),name="register"),
-    path('signin',views.LoginView.as_view(),name="login")
+    path('',views.LoginView.as_view(),name="login")
 
 ]

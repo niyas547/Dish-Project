@@ -4,6 +4,7 @@ from dishes.models import Dishes
 from django.contrib.auth.models import User
 from dishes.forms import RegistrationForm,LoginForm
 from django.contrib.auth import authenticate,login
+from django.contrib import messages
 
 
 # Create your views here.
@@ -16,8 +17,10 @@ class RegistrationView(View):
         if form.is_valid():
             User.objects.create_user(**form.cleaned_data)
             # form.save()
+            messages.success(request,"registration completed")
             return redirect("dish-all")
         else:
+            messages.error(request,"registration failed")
             return render(request,"register.html",{"form":form})
 class LoginView(View):
     def get(self,request,*args,**kwargs):
@@ -31,8 +34,10 @@ class LoginView(View):
             user=authenticate(request,username=uname,password=pwd)
             if user:
                 login(request,user)
+                messages.success(request,"login success")
                 return redirect("dish-all")
             else:
+                messages.error(request,"invalid credentials")
                 return render(request,"login.html",{"form":form})
 class DishAddView(View):
     def get(self,request,*args,**kwargs):
@@ -43,6 +48,7 @@ class DishAddView(View):
         price=request.POST.get("price")
         rating=request.POST.get("rating")
         Dishes.objects.create(name=name,category=category,price=price,rating=rating)
+        messages.success(request,"dish added successfully")
         return redirect("dish-all")
 class DishListView(View):
     def get(self,request,*args,**kwargs):
@@ -58,4 +64,5 @@ class DishDeleteView(View):
         id=kwargs.get("id")
         dish=Dishes.objects.get(id=id)
         dish.delete()
+        messages.success(request,"dish item deleted")
         return redirect("dish-all")

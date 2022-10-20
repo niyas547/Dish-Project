@@ -1,0 +1,46 @@
+django pop up messages
+from django.contrib import messages
+-give the messages those who want give the pop up messages
+messages.success(request,"task has been added")   give this messages before return
+messages.error(request,"registration failed")
+
+>put it on html pages below container tag
+<div class="row">
+            <div class="col-4"></div>
+            <div class="col-4">
+                {%if messages%}
+                {%for msg in messages%}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>{{msg}}</strong> You should check in on some of those fields below.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                
+                {% endif %}
+                {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{msg}}</strong> You should check in on some of those fields below.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                
+                {% endif %}
+                {%endfor%}
+            {%endif%}
+            </div>
+            <div class="col-4"></div>
+        </div>
+
+>>sign in required
+from django.utils.decorators import method_decorator
+
+def signin_required(fn):
+    def wrapper(request,*args,**kwargs):
+        if request.user.is_authenticated:
+            messages.error(request,"you must login")
+            return redirect("signin")
+        else:
+            return fn(request,*args,**kwargs)
+    return wrapper
+
+@method_decorator(signin_required,name="dispatch")   it for the class bases views
+@signin_required                                     if for the normal fn view

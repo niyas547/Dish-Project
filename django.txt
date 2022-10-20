@@ -1,3 +1,5 @@
+1-write view for add task and list task task detail  
+
 add task..................
 
 all inside the form tag
