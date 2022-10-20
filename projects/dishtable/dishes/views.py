@@ -1,10 +1,39 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views.generic import View
 from dishes.models import Dishes
+from django.contrib.auth.models import User
+from dishes.forms import RegistrationForm,LoginForm
+from django.contrib.auth import authenticate,login
 
 
 # Create your views here.
-
+class RegistrationView(View):
+    def get(self,request,*args,**kwargs):
+        form=RegistrationForm()
+        return render(request,"register.html",{"form":form})
+    def post(self,request,*args,**kwargs):
+        form=RegistrationForm(data=request.POST)
+        if form.is_valid():
+            User.objects.create_user(**form.cleaned_data)
+            # form.save()
+            return redirect("dish-all")
+        else:
+            return render(request,"register.html",{"form":form})
+class LoginView(View):
+    def get(self,request,*args,**kwargs):
+        form=LoginForm()
+        return render(request,"login.html",{"form":form})
+    def post(self,request,*args,**kwargs):
+        form=LoginForm(request.POST)
+        if form.is_valid():
+            uname=form.cleaned_data.get("username")
+            pwd=form.cleaned_data.get("password")
+            user=authenticate(request,username=uname,password=pwd)
+            if user:
+                login(request,user)
+                return redirect("dish-all")
+            else:
+                return render(request,"login.html",{"form":form})
 class DishAddView(View):
     def get(self,request,*args,**kwargs):
         return render(request,"add-dish.html")
@@ -14,8 +43,19 @@ class DishAddView(View):
         price=request.POST.get("price")
         rating=request.POST.get("rating")
         Dishes.objects.create(name=name,category=category,price=price,rating=rating)
-        return render(request,"add-dish.html")
+        return redirect("dish-all")
 class DishListView(View):
     def get(self,request,*args,**kwargs):
         all_dishes=Dishes.objects.all()
         return render(request,"list-dish.html",{"dishes":all_dishes})
+class DishDetailView(View):
+    def get(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        dish=Dishes.objects.get(id=id)
+        return render(request,"dish-detail.html",{"dish":dish})
+class DishDeleteView(View):
+    def get(self,request,*args,**kwargs):
+        id=kwargs.get("id")
+        dish=Dishes.objects.get(id=id)
+        dish.delete()
+        return redirect("dish-all")

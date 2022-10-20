@@ -1,12 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{%extends 'base.html'%}
+{%block body_block%}
+
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h3>{{request.user}}</h3>
+            <table class="table  ">
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Rating</th>
+                    <th>Action</th>
+                </tr>
+                {%for dish in dishes%}
+                <tr>
+                    
+                    <td>{{dish.id}}</td>
+                    <td>{{dish.name}}</td>
+                    <td>{{dish.category}}</td>
+                    <td>{{dish.price}}</td>
+                    <td>{{dish.rating}}</td>
+                    <td>
+                        <a href="{%url 'dish-detail' dish.id%}" class="btn btn-info">Details</a>
+                        <a href="" class="btn btn-warning">Edit</a>
+                        <a href="{%url 'dish-delete' dish.id%}" class="btn btn-danger">Delete</a>
+                    </td>
+                    
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+{%endblock%}

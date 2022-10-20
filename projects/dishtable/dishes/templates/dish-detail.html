@@ -1,0 +1,22 @@
+{%extends 'base.html'%}
+{%block body_block%}
+<div class="container">
+  <div class="row mt-5">
+      <div class="col-4"></div>
+      <div class="col-4"><div class="card" style="width: 100%;">
+          <div class="card-header">
+            Dish
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{dish.id}}</li>
+            <li class="list-group-item">{{dish.name}}</li>
+            <li class="list-group-item">{{dish.category}}</li>
+            <li class="list-group-item">{{dish.price}}</li>
+            <li class="list-group-item">{{dish.rating}}</li>
+          </ul>
+
+        </div></div>
+      <div class="col-4"></div>
+  </div>
+</div>
+{%endblock%}

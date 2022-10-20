@@ -5,3 +5,51 @@ name property added in each forms
 buttn type must be submit
 inside the form metod must post
 {% csrf_token %} inside the form tag
+in redirect in delete view have to give name in urls and also in return
+if it have any condition in htmlpage {{%%}} and end in {{%%endfor%}}
+and others will be in {{}}
+
+to activate the button
+in href"{%url 'task-detail' task.id%}
+
+
+jango Form:-------------------------------------
+from djngo import forms
+from django.conrtb.auth.models import user
+then create form like as serializer
+imposr from forms.modelform
+
+register view-----------------------------------
+class RegistrationView(View):
+    def get(self,request,*args,**kwargs):
+        form=RegistrationForm()
+        return render(request,"register.html",{"form":form})
+    def post(self,request,*args,**kwargs):
+        forms=RegistrationForm(data=request.POST)
+        if forms.is_valid():
+            User.objects.create_user(**forms.cleaned_data)
+            return redirect("todo-all")
+        else:
+           return render(request,"register.html",{"form":form})
+
+from django.contrib.auth import authenticate,login
+import authenticate,login,logout
+
+login form and view:
+class SigninView(View):
+    def get(self,request,*args,**kwargs):
+        form=LoginForm()
+        return render(request,"signin.html",{"form":form})
+    def post(self,request,*args,**kwargs):
+        form=LoginForm(request.POST)
+        if form.is_valid():
+            uname=form.cleaned_data.get("username")
+            pwd=form.cleaned_data.get("password")
+            user=authenticate(request,username=uname,password=pwd)
+            if user:
+                login(request,user)
+                return redirect("todo-all")
+            else:
+                return render(request,"signin.html",{"form":form})
+
+>>>>>>>>only hashed password will be go to the session after login

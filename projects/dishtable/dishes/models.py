@@ -10,3 +10,6 @@ class Dishes(models.Model):
     category=models.CharField(max_length=100)
     price=models.PositiveBigIntegerField()
     rating=models.FloatField(default=3)
+    
+    def __str__(self):
+        return self.name

@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from dishes.views import DishAddView,DishListView
+# from dishes.views import DishAddView,DishListView,DishDetailView,DishDeleteView
+from dishes import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('add_dishes',DishAddView.as_view()),
-    path('list_dishes',DishListView.as_view())
+    path('add_dish',views.DishAddView.as_view(),name="dish-add"),
+    path('list_dishes',views.DishListView.as_view(),name="dish-all"),
+    path('dishes/<int:id>',views.DishDetailView.as_view(),name="dish-detail"),
+    path('dishes/<int:id>/remove',views.DishDeleteView.as_view(),name="dish-delete"),
+    path('signup',views.RegistrationView.as_view(),name="register"),
+    path('signin',views.LoginView.as_view(),name="login")
+
 ]
